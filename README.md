@@ -11,6 +11,7 @@ Addional components required:
  - [custom:scheduler-card](https://github.com/nielsfaber/scheduler-card)
  - [custom:thermostat-dark-card](https://github.com/ciotlosm/lovelace-thermostat-dark-card)
  - [custom:vertical-stack-in-card](https://github.com/ofekashery/vertical-stack-in-card)
+ - HACS Scheduler Component
  
 Thermostat: climate.living_room (from Nest Integration)
 
