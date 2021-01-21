@@ -1,7 +1,7 @@
 # My-Dark-Thermostat
 My custom multi-card configuration using Dark Thermostat card for my Nest Thermostat
 
- - [my-card-image] (https://community-assets.home-assistant.io/original/3X/7/f/7fd8149d76be7736f1e209c62abfc2888e1acc21.png)
+![image|326x500](upload://ieXAwFa6BjCh64NLJMFwFeUdUf7.png) 
 
 Addional components required:
  - [browser-mod](https://github.com/thomasloven/hass-browser_mod)
