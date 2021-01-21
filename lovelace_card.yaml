@@ -1,256 +1,379 @@
-type: 'custom:vertical-stack-in-card'
-cards:
-  - type: 'custom:thermostat-dark-card'
-    name: Living Room
-    entity: climate.living_room
-    chevron_size: 50
-    step: 0.1
-    pending: '1'
-    idle_zone: '2'
-    hvac:
-      states:
-        'off': 'off'
-        cooling: cool
-        heating: heat
-    attribute: hvac_action
-    away:
-      sensor:
-        sensor: sensor.living_room_eco_temp
-    style: |
-      ha-card {
-        {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
-          background: #EB6D00;
-          border-bottom: 1pt solid #E65E00;
-        {% else %}
-          {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
-            background: #0055FF ; 
-            border-bottom: 1pt solid #00008B;
-          {% else %}
-            background: #373F48 ;
-            border-bottom: 1pt solid #2b333a;
-          {% endif %}
-        {% endif %}
-        box-shadow: 0 0 20px;
-       }
-       .dial_title {
-         color: white !important;
-       }
-  - type: entities
-    entities:
-      - entity: sensor.living_room_humidity
-        name: Inside Humidity
-        icon: 'mdi:none'
-    style:
-      .: |
-        ha-card {
-          color: white;
-          font-size: 1.1rem;
-          {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
-            background: #EB6D00;
-            border-bottom: 1pt solid #E65E00;
-          {% else %}
-            {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
-              background: #0055FF ; 
-              border-bottom: 1pt solid #00008B;
-            {% else %}
-              background: #373F48 ;
-              border-bottom: 1pt solid #2b333a;
-            {% endif %}
-          {% endif %}
-        }
-      $hui-sensor-entity-row$hui-generic-entity-row$: |
-        state-badge {
-          display: none;
-        }
-  - type: entities
-    entities:
-      - entity: sensor.openweathermap_temperature
-        name: Outside Temp
-        icon: 'mdi:none'
-    style: |
-      ha-card {
-        color: white;
-        {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
-          background: #EB6D00;
-          border-bottom: 1pt solid #E65E00;
-        {% else %}
-          {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
-            background: #0055FF ; 
-            border-bottom: 1pt solid #00008B;
-          {% else %}
-            background: #373F48 ;
-            border-bottom: 1pt solid #2b333a;
-          {% endif %}
-        {% endif %}
-        box-shadow: 0 0 10px;
-        font-size: 1.0rem;
-       }
-  - type: horizontal-stack
-    cards:
-      - type: 'custom:button-card'
-        entity: sensor.living_room_hvac_mode
-        name: MODE
-        show_name: true
-        tap_action:
-          action: more-info
-        color_type: icon
-        state:
-          - operator: template
-            value: |
-              [[[ return states['climate.living_room'].state === 'off' ]]]
-            icon: 'mdi:none'
-            color: white
-          - operator: template
-            value: |
-              [[[ return states['climate.living_room'].state === 'heat' ]]]
-            icon: 'mdi:none'
-            color: 'rgb(239, 140, 0)'
-          - operator: template
-            value: |
-              [[[ return states['climate.living_room'].state === 'cool' ]]]
-            color: blue
-            icon: 'mdi:none'
-        show_state: false
-        style: |
-          ha-card {
-            font-size: 85% !important;
-            color: white;
-            background:
-            {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
-              #EB6D00 ;
-            {% else %}
-              {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
-                #0055FF ; 
-              {% else %}
-                #373F48;
-              {% endif %}
-            {% endif %}
-            box-shadow: none;
-          }
-          ha-icon {
-            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.1' height='24.1' viewBox='-282.6 655.7 611.9 511.8' fill='%23FFF'%3E%3Cpath d='M235.4 1039.5c-38.3 30.7-76.8 46.1-117.7 46.1-51.2 0-99.7-23-153.5-74.2-61.4-58.8-127.9-110-194.5-110-12.8 0-25.6 2.6-38.4 5.1-2.3.7-5.7 1-7.6-2.6-1.7-3.2 0-5.1 2.6-7.6 38.3-30.7 76.8-46.1 117.7-46.1 51.2 0 99.7 23 153.5 74.2 61.3 58.8 127.8 110 194.4 110 12.8 0 25.6-2.6 38.3-5.1 2.8-.5 5.9-1.2 7.6 2.6 1.6 3.3.1 5.1-2.4 7.6zM-194.5 991c38.3 0 76.8 18 115.2 56.3 46.1 43.5 97.2 84.4 145.9 84.4 10.2 0 20.5-2.6 28.2-5.1 2.6-.7 4.6.1 5.7 2.1 1.7 3.1-.6 5.6-.6 5.6-28.2 23-58.8 33.2-87 33.2-38.3 0-76.8-18-115.2-56.3-46.1-43.5-97.2-84.4-145.9-84.4-10.2 0-20.4 2.9-28.2 5.1-2.3.7-4.2.7-5.7-2.3-1.5-2.8.6-5.3.6-5.3 28.1-20.6 56.3-33.3 87-33.3zM327.4 799c-28.2 23-58.8 33.2-87 33.2-38.3 0-76.8-18-115.2-56.3-46-43.4-97.1-84.4-145.8-84.4-10.2 0-20.5 2.6-28.2 5.1-2.2.7-4.3.2-5.6-1.8-2.2-3.5.5-5.9.5-5.9 28.2-23 58.8-33.2 87-33.2 38.3 0 76.8 18 115.2 56.3 46.1 43.5 97.2 84.4 145.9 84.4 10.2 0 20.5-2.6 28.2-5.1 2.1-.8 4.3-1.1 5.7.7 1.5 2.1 1.9 4.5-.7 7zM81.9 811.9c61.4 58.8 127.9 110 194.5 110 12.8 0 25.6-2.6 38.3-5.1 2.6-.7 5.7-1.2 7.6 2.6 1.6 3.1 0 5.1-2.6 7.6-38.4 30.7-76.8 46-117.7 46-51.2 0-99.7-23-153.5-74.2-61.4-58.8-127.9-110-194.5-110-12.8 0-25.6 2.6-38.3 5.1-2.6.7-5.7.7-7.6-2.6-1.8-3.1 0-5.1 2.6-7.6 38.3-30.7 76.8-46.1 117.7-46.1 51.1 0 99.7 23.1 153.5 74.3z'/%3E%3C/svg%3E");
-            background-position: 25%;
-            background-position-x: 50%;
-            background-position-y: center;
-            background-repeat: no-repeat;
-            height: 44px;
-            margin: 0 
-            auto 3px;
-            width: 26px;            
+  - path: environment
+    title: Environment
+    icon: 'hass:thermostat'
+    theme: ''
+    badges: []
+    popup_cards:
+      sensor.living_room_hvac_mode:
+        type: 'custom:card-templater'
+        title: Cancel
+        card:
+          type: entities
+          show_header_toggle: false
+          title: 'Set thermostat to:'
+          style: |
+            #main-title {
+              font-size: 16px;
             }
-      - type: 'custom:button-card'
-        entity: sensor.living_room_preset_mode
-        name: ECO
-        label: ECO
-        tap_action:
-          action: more-info
-        color_type: icon
-        color: green
-        icon: 'mdi:none'
-        state:
-          - operator: template
-            value: >
-              [[[ return states['climate.living_room'].attributes.preset_mode ==
-              'none' ]]]
-            icon: 'mdi:none'
-            color: white
-        show_state: false
-        show_name: true
-        style: |
-          ha-card {
-            font-size: 85% !important;
-            color: white;
-            background:
-            {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
-              #EB6D00 !important;
-            {% else %}
-              {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
-                #0055FF !important; 
+            .card-header {
+              line-height: 20px;
+            }
+            .card-header .name {
+              font-size: 14px;
+              color: gray;
+            }
+          entities:
+            - entity: climate.living_room
+              attribute: hvac_heat
+              type: 'custom:multiple-entity-row'
+              image: /local/images/nest-mode-heat-200x200.png
+              name: Heat
+              show_state: true
+              icon: true
+              styles:
+                font-weight: bold
+                width: 80px
+                text-align: right
+                color: '#25B1F6'
+              tap_action:
+                action: call-service
+                service: climate.set_hvac_mode
+                service_data:
+                  entity_id: climate.living_room
+                  hvac_mode: heat
+            - entity: climate.living_room
+              attribute: hvac_off
+              type: 'custom:multiple-entity-row'
+              image: /local/images/nest-mode-off-200x200.png
+              name: 'Off'
+              show_state: true
+              styles:
+                font-weight: bold
+                width: 40px
+                text-align: right
+                color: '#25B1F6'
+              tap_action:
+                action: call-service
+                service: climate.set_hvac_mode
+                service_data:
+                  entity_id: climate.living_room
+                  hvac_mode: 'off'
+        entities:
+          - entity: sensor.living_room_hvac_mode
+            state_template: |
+              {% if is_state('sensor.living_room_hvac_mode', 'heat') %}
+               '✓'
               {% else %}
-                #373F48 !important;
+                ' '
               {% endif %}
-            {% endif %}
-            box-shadow: none;
-          }  
-          ha-icon { 
-            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.1' height='24.1' viewBox='0 0 26 24' fill='%23FFF'%3E%3Cpath class='st0' d='M.8 20.7c6.3 4.5 13.1 4.7 19-1.7 6.1-6.5 6.4-14.5 6.2-19-3.3 4-9.5 2.2-18.2 5C1 7.2.1 15.3 0 18.7c1.6-1.7 4.6-4.5 8.5-5.9 6.2-2.3 8.9-2.3 12.6-5.1-2.3 2.6-5.3 4.1-11.1 6.2-4.2 1.5-7.9 5.3-9.2 6.8z'/%3E%3C/svg%3E"); 
-            background-position: 25%;
-            background-position-x: 50%;
-            background-position-y: center;
-            background-repeat: no-repeat;
-            height: 44px;
-            margin: 0 
-            auto 3px;
-            width: 26px;            
-          }
-      - type: 'custom:button-card'
-        entity: climate.living_room
-        name: SCHEDULE
-        action: url
-        navigation_path: 'https://home.nest.com'
-        color_type: card
-        icon: none
-        show_state: false
-        show_name: true
-        style: |
-          ha-card {
-            font-size: 85% !important;
-            color: white !important;
-            background:
-            {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
-              #EB6D00 !important;
-            {% else %}
-              {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
-                #0055FF !important; 
-              {% else %}
-                #373F48 !important;
-              {% endif %}
-            {% endif %}
-            box-shadow: none;
-          }   ha-icon { 
-            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='24.1' fill='%23FFF'%3E%3Cpath d='M17 24.5H5c-2.8 0-5-2.2-5-5v-12c0-2 1.2-3.8 3-4.6v1c0 1.4 1.1 2.6 2.5 2.6S8 5.3 8 3.9V2.5h6v1.4c0 1.4 1.1 2.6 2.5 2.6S19 5.3 19 3.9v-1c1.8.8 3 2.5 3 4.6v12c0 2.8-2.2 5-5 5zm-1.7-7.9l-3.8-2.2V9c0-.6-.4-1-1-1s-1 .4-1 1V15.6s0 .1.1.1l.1.1.1.1s.1 0 .1.1l4.3 2.5c.5.3 1.1.1 1.4-.4.4-.6.2-1.2-.3-1.5zM16.5 5c-.6 0-1-.4-1-1V1c0-.6.4-1 1-1s1 .4 1 1v3c0 .6-.4 1-1 1zm-11 0c-.6 0-1-.4-1-1V1c0-.6.4-1 1-1s1 .4 1 1v3c0 .6-.4 1-1 1z'/%3E%3C/svg%3E"); 
-            background-position: 25%;
-            background-position-x: 50%;
-            background-position-y: center;
-            background-repeat: no-repeat;
-            height: 44px;
-            margin: 0 
-            auto 3px;
-            width: 26px;            
-          }
-      - type: 'custom:button-card'
-        entity: climate.living_room
-        name: HISTORY
-        tap_action:
-          action: url
-          url_path: 'https://home.nest.com'
-        color_type: card
-        icon: 'mdi:none'
-        show_state: false
-        show_name: true
-        style: |
-          ha-card {
-            font-size: 80% !important;
-            color: white !important;
-            background:
-            {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
-              #EB6D00 !important;
-            {% else %}
-              {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
-                #0055FF !important; 
-              {% else %}
-                #373F48 !important;
-              {% endif %}
-            {% endif %}
-            box-shadow: none;
-          }  ha-icon {
-            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 26 24' fill='%23FFF' stroke='%23FFF'%3E%3Cpath stroke-width='.05' d='M12.5 24c-6.6 0-12-5.4-12-12s5.4-12 12-12c.6 0 1 .4 1 1s-.4 1-1 1C7 2 2.5 6.5 2.5 12s4.5 10 10 10 10-4.5 10-10c0-.6.4-1 1-1s1 .4 1 1c0 6.6-5.4 12-12 12zM22.9 8.4c-.5.2-1.1 0-1.3-.5-.2-.5 0-1.1.5-1.3.5-.2 1.1 0 1.3.5.2.5 0 1.1-.5 1.3zm-3.6-3.7c-.4-.4-.4-1 0-1.4s1-.4 1.4 0c.4.4.4 1 0 1.4-.4.4-1 .4-1.4 0zm-2.1 11.7l-5.2-3s-.1 0-.1-.1l-.1-.1-.1-.1-.1-.1v-.1-.1-.1-.1-.1-7.1c0-.6.4-1 1-1s1 .4 1 1v6.4l4.7 2.7c.5.3.6.9.4 1.4-.4.6-1 .7-1.5.5zm-1.1-14c-.5-.2-.8-.8-.5-1.3.2-.5.8-.8 1.3-.5.5.2.8.8.5 1.3-.2.5-.8.7-1.3.5z'/%3E%3C/svg%3E"); 
-            background-position: 25%;
-            background-position-x: 50%;
-            background-position-y: center;
-            background-repeat: no-repeat;
-            height: 44px;
-            margin: 0 
-            auto 3px;
-            width: 26px;            
-          }
+        entity: sensor.living_room_hvac_mode
+      sensor.living_room_preset_mode:
+        title: ' '
+        card:
+          style: |
+            .card-header {
+              line-height: 20px;
+              font-size: 14px;
+              white-space: normal;
+              text-align: center;
+            }
+            .card-header .name {
+              font-size: 14px;
+              color: gray;
+              white-space: normal !important;
+              text-align: center;
+            }
+          type: entities
+          show_header_toggle: false
+          title: >-
+            Save energy by using Eco Temperatures when no one's home. Or turn
+            them on manually any time.
+          entities:
+            - type: button
+              icon: 'mdi:leaf'
+              action_name: START ECO
+              name: ' '
+              tap_action:
+                action: call-service
+                service: climate.set_preset_mode
+                service_data:
+                  entity_id: climate.living_room
+                  preset_mode: eco
+            - type: button
+              icon: 'mdi:leaf-off'
+              action_name: STOP ECO
+              name: ' '
+              tap_action:
+                action: call-service
+                service: climate.set_preset_mode
+                service_data:
+                  entity_id: climate.living_room
+                  preset_mode: none
+      climate.living_room:
+        title: Schedule
+        card:
+          type: 'custom:scheduler-card'
+          title: Living Room Schedule
+          include:
+            - climate.living_room
+    cards:
+      - type: 'custom:vertical-stack-in-card'
+        cards:
+          - type: 'custom:thermostat-dark-card'
+            name: Living Room
+            entity: climate.living_room
+            chevron_size: 50
+            step: 0.1
+            pending: '1'
+            idle_zone: '2'
+            hvac:
+              states:
+                'off': 'off'
+                cooling: cool
+                heating: heat
+            attribute: hvac_action
+            away:
+              sensor:
+                sensor: sensor.living_room_eco_temp
+            style: |
+              ha-card {
+                {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
+                  background: #EB6D00;
+                  border-bottom: 1pt solid #E65E00;
+                {% else %}
+                  {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
+                    background: #0055FF ; 
+                    border-bottom: 1pt solid #00008B;
+                  {% else %}
+                    background: #373F48 ;
+                    border-bottom: 1pt solid #2b333a;
+                  {% endif %}
+                {% endif %}
+                box-shadow: 0 0 20px;
+               }
+               .dial_title {
+                 color: white !important;
+               }
+          - type: entities
+            entities:
+              - entity: sensor.living_room_humidity
+                name: Inside Humidity
+                icon: 'mdi:none'
+            style:
+              .: |
+                ha-card {
+                  color: white;
+                  font-size: 1.1rem;
+                  {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
+                    background: #EB6D00;
+                    border-bottom: 1pt solid #E65E00;
+                  {% else %}
+                    {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
+                      background: #0055FF ; 
+                      border-bottom: 1pt solid #00008B;
+                    {% else %}
+                      background: #373F48 ;
+                      border-bottom: 1pt solid #2b333a;
+                    {% endif %}
+                  {% endif %}
+                }
+              $hui-sensor-entity-row$hui-generic-entity-row$: |
+                state-badge {
+                  display: none;
+                }
+          - type: entities
+            entities:
+              - entity: sensor.openweathermap_temperature
+                name: Outside Temp
+                icon: 'mdi:none'
+            style: |
+              ha-card {
+                color: white;
+                {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
+                  background: #EB6D00;
+                  border-bottom: 1pt solid #E65E00;
+                {% else %}
+                  {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
+                    background: #0055FF ; 
+                    border-bottom: 1pt solid #00008B;
+                  {% else %}
+                    background: #373F48 ;
+                    border-bottom: 1pt solid #2b333a;
+                  {% endif %}
+                {% endif %}
+                box-shadow: 0 0 10px;
+                font-size: 1.0rem;
+               }
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                entity: sensor.living_room_hvac_mode
+                name: MODE
+                show_name: true
+                tap_action:
+                  action: more-info
+                color_type: icon
+                state:
+                  - operator: template
+                    value: >
+                      [[[ return states['climate.living_room'].state === 'off'
+                      ]]]
+                    icon: 'mdi:none'
+                    color: white
+                  - operator: template
+                    value: >
+                      [[[ return states['climate.living_room'].state === 'heat'
+                      ]]]
+                    icon: 'mdi:none'
+                    color: 'rgb(239, 140, 0)'
+                  - operator: template
+                    value: >
+                      [[[ return states['climate.living_room'].state === 'cool'
+                      ]]]
+                    color: blue
+                    icon: 'mdi:none'
+                show_state: false
+                style: |
+                  ha-card {
+                    font-size: 85% !important;
+                    color: white;
+                    background:
+                    {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
+                      #EB6D00 ;
+                    {% else %}
+                      {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
+                        #0055FF ; 
+                      {% else %}
+                        #373F48;
+                      {% endif %}
+                    {% endif %}
+                    box-shadow: none;
+                  }
+                  ha-icon {
+                    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.1' height='24.1' viewBox='-282.6 655.7 611.9 511.8' fill='%23FFF'%3E%3Cpath d='M235.4 1039.5c-38.3 30.7-76.8 46.1-117.7 46.1-51.2 0-99.7-23-153.5-74.2-61.4-58.8-127.9-110-194.5-110-12.8 0-25.6 2.6-38.4 5.1-2.3.7-5.7 1-7.6-2.6-1.7-3.2 0-5.1 2.6-7.6 38.3-30.7 76.8-46.1 117.7-46.1 51.2 0 99.7 23 153.5 74.2 61.3 58.8 127.8 110 194.4 110 12.8 0 25.6-2.6 38.3-5.1 2.8-.5 5.9-1.2 7.6 2.6 1.6 3.3.1 5.1-2.4 7.6zM-194.5 991c38.3 0 76.8 18 115.2 56.3 46.1 43.5 97.2 84.4 145.9 84.4 10.2 0 20.5-2.6 28.2-5.1 2.6-.7 4.6.1 5.7 2.1 1.7 3.1-.6 5.6-.6 5.6-28.2 23-58.8 33.2-87 33.2-38.3 0-76.8-18-115.2-56.3-46.1-43.5-97.2-84.4-145.9-84.4-10.2 0-20.4 2.9-28.2 5.1-2.3.7-4.2.7-5.7-2.3-1.5-2.8.6-5.3.6-5.3 28.1-20.6 56.3-33.3 87-33.3zM327.4 799c-28.2 23-58.8 33.2-87 33.2-38.3 0-76.8-18-115.2-56.3-46-43.4-97.1-84.4-145.8-84.4-10.2 0-20.5 2.6-28.2 5.1-2.2.7-4.3.2-5.6-1.8-2.2-3.5.5-5.9.5-5.9 28.2-23 58.8-33.2 87-33.2 38.3 0 76.8 18 115.2 56.3 46.1 43.5 97.2 84.4 145.9 84.4 10.2 0 20.5-2.6 28.2-5.1 2.1-.8 4.3-1.1 5.7.7 1.5 2.1 1.9 4.5-.7 7zM81.9 811.9c61.4 58.8 127.9 110 194.5 110 12.8 0 25.6-2.6 38.3-5.1 2.6-.7 5.7-1.2 7.6 2.6 1.6 3.1 0 5.1-2.6 7.6-38.4 30.7-76.8 46-117.7 46-51.2 0-99.7-23-153.5-74.2-61.4-58.8-127.9-110-194.5-110-12.8 0-25.6 2.6-38.3 5.1-2.6.7-5.7.7-7.6-2.6-1.8-3.1 0-5.1 2.6-7.6 38.3-30.7 76.8-46.1 117.7-46.1 51.1 0 99.7 23.1 153.5 74.3z'/%3E%3C/svg%3E");
+                    background-position: 25%;
+                    background-position-x: 50%;
+                    background-position-y: center;
+                    background-repeat: no-repeat;
+                    height: 44px;
+                    margin: 0 
+                    auto 3px;
+                    width: 26px;            
+                    }
+              - type: 'custom:button-card'
+                entity: sensor.living_room_preset_mode
+                name: ECO
+                label: ECO
+                tap_action:
+                  action: more-info
+                color_type: icon
+                color: green
+                icon: 'mdi:none'
+                state:
+                  - operator: template
+                    value: >
+                      [[[ return
+                      states['climate.living_room'].attributes.preset_mode ==
+                      'none' ]]]
+                    icon: 'mdi:none'
+                    color: white
+                show_state: false
+                show_name: true
+                style: |
+                  ha-card {
+                    font-size: 85% !important;
+                    color: white;
+                    background:
+                    {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
+                      #EB6D00 !important;
+                    {% else %}
+                      {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
+                        #0055FF !important; 
+                      {% else %}
+                        #373F48 !important;
+                      {% endif %}
+                    {% endif %}
+                    box-shadow: none;
+                  }  
+                  ha-icon { 
+                    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.1' height='24.1' viewBox='0 0 26 24' fill='%23FFF'%3E%3Cpath class='st0' d='M.8 20.7c6.3 4.5 13.1 4.7 19-1.7 6.1-6.5 6.4-14.5 6.2-19-3.3 4-9.5 2.2-18.2 5C1 7.2.1 15.3 0 18.7c1.6-1.7 4.6-4.5 8.5-5.9 6.2-2.3 8.9-2.3 12.6-5.1-2.3 2.6-5.3 4.1-11.1 6.2-4.2 1.5-7.9 5.3-9.2 6.8z'/%3E%3C/svg%3E"); 
+                    background-position: 25%;
+                    background-position-x: 50%;
+                    background-position-y: center;
+                    background-repeat: no-repeat;
+                    height: 44px;
+                    margin: 0 
+                    auto 3px;
+                    width: 26px;            
+                  }
+              - type: 'custom:button-card'
+                entity: climate.living_room
+                name: SCHEDULE
+                action: url
+                navigation_path: 'https://home.nest.com'
+                color_type: card
+                icon: none
+                show_state: false
+                show_name: true
+                style: |
+                  ha-card {
+                    font-size: 85% !important;
+                    color: white !important;
+                    background:
+                    {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
+                      #EB6D00 !important;
+                    {% else %}
+                      {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
+                        #0055FF !important; 
+                      {% else %}
+                        #373F48 !important;
+                      {% endif %}
+                    {% endif %}
+                    box-shadow: none;
+                  }   ha-icon { 
+                    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='24.1' fill='%23FFF'%3E%3Cpath d='M17 24.5H5c-2.8 0-5-2.2-5-5v-12c0-2 1.2-3.8 3-4.6v1c0 1.4 1.1 2.6 2.5 2.6S8 5.3 8 3.9V2.5h6v1.4c0 1.4 1.1 2.6 2.5 2.6S19 5.3 19 3.9v-1c1.8.8 3 2.5 3 4.6v12c0 2.8-2.2 5-5 5zm-1.7-7.9l-3.8-2.2V9c0-.6-.4-1-1-1s-1 .4-1 1V15.6s0 .1.1.1l.1.1.1.1s.1 0 .1.1l4.3 2.5c.5.3 1.1.1 1.4-.4.4-.6.2-1.2-.3-1.5zM16.5 5c-.6 0-1-.4-1-1V1c0-.6.4-1 1-1s1 .4 1 1v3c0 .6-.4 1-1 1zm-11 0c-.6 0-1-.4-1-1V1c0-.6.4-1 1-1s1 .4 1 1v3c0 .6-.4 1-1 1z'/%3E%3C/svg%3E"); 
+                    background-position: 25%;
+                    background-position-x: 50%;
+                    background-position-y: center;
+                    background-repeat: no-repeat;
+                    height: 44px;
+                    margin: 0 
+                    auto 3px;
+                    width: 26px;            
+                  }
+              - type: 'custom:button-card'
+                entity: climate.living_room
+                name: HISTORY
+                tap_action:
+                  action: url
+                  url_path: 'https://home.nest.com'
+                color_type: card
+                icon: 'mdi:none'
+                show_state: false
+                show_name: true
+                style: |
+                  ha-card {
+                    font-size: 80% !important;
+                    color: white !important;
+                    background:
+                    {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
+                      #EB6D00 !important;
+                    {% else %}
+                      {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
+                        #0055FF !important; 
+                      {% else %}
+                        #373F48 !important;
+                      {% endif %}
+                    {% endif %}
+                    box-shadow: none;
+                  }  ha-icon {
+                    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 26 24' fill='%23FFF' stroke='%23FFF'%3E%3Cpath stroke-width='.05' d='M12.5 24c-6.6 0-12-5.4-12-12s5.4-12 12-12c.6 0 1 .4 1 1s-.4 1-1 1C7 2 2.5 6.5 2.5 12s4.5 10 10 10 10-4.5 10-10c0-.6.4-1 1-1s1 .4 1 1c0 6.6-5.4 12-12 12zM22.9 8.4c-.5.2-1.1 0-1.3-.5-.2-.5 0-1.1.5-1.3.5-.2 1.1 0 1.3.5.2.5 0 1.1-.5 1.3zm-3.6-3.7c-.4-.4-.4-1 0-1.4s1-.4 1.4 0c.4.4.4 1 0 1.4-.4.4-1 .4-1.4 0zm-2.1 11.7l-5.2-3s-.1 0-.1-.1l-.1-.1-.1-.1-.1-.1v-.1-.1-.1-.1-.1-7.1c0-.6.4-1 1-1s1 .4 1 1v6.4l4.7 2.7c.5.3.6.9.4 1.4-.4.6-1 .7-1.5.5zm-1.1-14c-.5-.2-.8-.8-.5-1.3.2-.5.8-.8 1.3-.5.5.2.8.8.5 1.3-.2.5-.8.7-1.3.5z'/%3E%3C/svg%3E"); 
+                    background-position: 25%;
+                    background-position-x: 50%;
+                    background-position-y: center;
+                    background-repeat: no-repeat;
+                    height: 44px;
+                    margin: 0 
+                    auto 3px;
+                    width: 26px;            
+                  }
