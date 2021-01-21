@@ -23,7 +23,7 @@
               color: gray;
             }
           entities:
-            - entity: climate.living_room
+            - entity: sensor.living_room_hvac_mode
               attribute: hvac_heat
               type: 'custom:multiple-entity-row'
               image: /local/images/nest-mode-heat-200x200.png
@@ -41,7 +41,7 @@
                 service_data:
                   entity_id: climate.living_room
                   hvac_mode: heat
-            - entity: climate.living_room
+            - entity: sensor.living_room_hvac_mode
               attribute: hvac_off
               type: 'custom:multiple-entity-row'
               image: /local/images/nest-mode-off-200x200.png
