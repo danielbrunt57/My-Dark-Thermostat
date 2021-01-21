@@ -34,7 +34,13 @@
         friendly_name: Living Room HVAC Mode
         value_template: >
           {{ states('climate.living_room') }}
-        hvac_off: if (state === 'off') return '✔'; else return ' ';
-        hvac_heat: if (state === 'heat') return '✔'; else return ' ';
-        hvac_cool: if (state === 'cool') return '✔'; else return ' ';
-        hvac_auto: if (state === 'auto') return '✔'; else return ' ';
+        attribute_templates:
+          hvac_off: >
+           {% if (states('sensor.living_room_hvac_mode') == 'off') %} ✔ {% else %} {% endif %}
+          hvac_heat:  >
+           {% if (states('sensor.living_room_hvac_mode') == 'heat') %} ✔ {% else %} {% endif %}
+          hvac_cool:  >
+           {% if (states('sensor.living_room_hvac_mode') == 'cool') %} ✔ {% else %} {% endif %}
+          hvac_auto:  >
+           {% if (states('sensor.living_room_hvac_mode') == 'auto') %} ✔ {% else %} {% endif %}
+          
