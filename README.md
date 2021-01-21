@@ -1,4 +1,5 @@
-# My-Dark-Thermostat
+# My "Dark Thermostat" Config
+
 My custom multi-card configuration using Dark Thermostat card for my Nest Thermostat
 
 ![image](https://community-assets.home-assistant.io/original/3X/7/f/7fd8149d76be7736f1e209c62abfc2888e1acc21.png) 
