@@ -1,0 +1,40 @@
+  - platform: template
+    sensors:
+    
+      living_room_eco_temp:
+        friendly_name: Living Room ECO Temperature Range
+        value_template: >
+          {% if 19.5 < state_attr('climate.living_room', 'temperature')|float|round(1,"half") < 24.5 %}
+            none
+          {% else %}
+            eco
+          {% endif %}
+          
+      living_room_hvac_action:
+        friendly_name: Living Room HVAC Action
+        value_template: >
+          {{ state_attr('climate.living_room','hvac_action') }}
+
+      living_room_preset_mode:
+        friendly_name: Living Room Preset Mode
+        value_template: >
+          {{ state_attr('climate.living_room','preset_mode') }}
+
+      living_room_setpoint:
+        friendly_name: Living Room Setpoint
+        value_template: >
+          {{ state_attr('climate.living_room', 'temperature') }}
+          
+      living_room_temperature:
+        friendly_name: Living Room Temperature
+        value_template: >
+          {{ state_attr('climate.living_room','current_temperature') }}
+
+      living_room_hvac_mode:
+        friendly_name: Living Room HVAC Mode
+        value_template: >
+          {{ states('climate.living_room') }}
+        hvac_off: if (state === 'off') return '✔'; else return ' ';
+        hvac_heat: if (state === 'heat') return '✔'; else return ' ';
+        hvac_cool: if (state === 'cool') return '✔'; else return ' ';
+        hvac_auto: if (state === 'auto') return '✔'; else return ' ';
