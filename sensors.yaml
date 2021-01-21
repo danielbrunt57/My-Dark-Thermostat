@@ -15,7 +15,7 @@ sensor:
       living_room_eco_temp:
         friendly_name: Living Room ECO Temperature Range
         value_template: >
-          {% if {{ states('sensor.nest_eco_low') }} < states('sensor.living_room_setpoint') < {{ states('sensor.nest_eco_high') }} %}
+          {% if states('sensor.nest_eco_low') < states('sensor.living_room_setpoint') < states('sensor.nest_eco_high') %}
             none
           {% else %}
             eco
