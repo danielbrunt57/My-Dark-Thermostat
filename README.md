@@ -1,7 +1,7 @@
 # My-Dark-Thermostat
 My custom multi-card configuration using Dark Thermostat card for my Nest Thermostat
 
-Components required:
+Addional components required:
  - browser-mod
  - card-mod
  - custom:button-card
