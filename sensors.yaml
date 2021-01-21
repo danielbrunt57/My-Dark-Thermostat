@@ -1,16 +1,26 @@
 sensor:
   - platform: template
     sensors:
-    
+
+      nest_eco_low:
+        device_class: temperature
+        unit_of_measurement: '°C'
+        value_template: 19.5
+
+      nest_eco_high:
+        device_class: temperature
+        unit_of_measurement: '°C'
+        value_template: 24.5
+
       living_room_eco_temp:
         friendly_name: Living Room ECO Temperature Range
         value_template: >
-          {% if 19.5 < state_attr('climate.living_room', 'temperature')|float|round(1,"half") < 24.5 %}
+          {% if {{ states('sensor.nest_eco_low') }} < states('sensor.living_room_setpoint') < {{ states('sensor.nest_eco_high') }} %}
             none
           {% else %}
             eco
           {% endif %}
-          
+
       living_room_hvac_action:
         friendly_name: Living Room HVAC Action
         value_template: >
@@ -29,7 +39,7 @@ sensor:
       living_room_temperature:
         friendly_name: Living Room Temperature
         value_template: >
-          {{ state_attr('climate.living_room','current_temperature') }}
+          {{ state_attr('climate.living_room','current_temperature')|float|round(1,"half") }}
 
       living_room_hvac_mode:
         friendly_name: Living Room HVAC Mode
@@ -37,11 +47,10 @@ sensor:
           {{ states('climate.living_room') }}
         attribute_templates:
           hvac_off: >
-           {% if (states('sensor.living_room_hvac_mode') == 'off') %} ✔ {% else %} {% endif %}
+            {% if (states('sensor.living_room_hvac_mode') == 'off') %} ✔ {% else %} {% endif %}
           hvac_heat:  >
-           {% if (states('sensor.living_room_hvac_mode') == 'heat') %} ✔ {% else %} {% endif %}
+            {% if (states('sensor.living_room_hvac_mode') == 'heat') %} ✔ {% else %} {% endif %}
           hvac_cool:  >
-           {% if (states('sensor.living_room_hvac_mode') == 'cool') %} ✔ {% else %} {% endif %}
+            {% if (states('sensor.living_room_hvac_mode') == 'cool') %} ✔ {% else %} {% endif %}
           hvac_auto:  >
-           {% if (states('sensor.living_room_hvac_mode') == 'auto') %} ✔ {% else %} {% endif %}
-          
+            {% if (states('sensor.living_room_hvac_mode') == 'auto') %} ✔ {% else %} {% endif %}
