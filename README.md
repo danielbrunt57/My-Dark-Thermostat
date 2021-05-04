@@ -24,3 +24,5 @@ Custom sensors:
  - living_room_preset_mode
  - living_room_setpoint
  - living_room_temperature
+
+Copy the code from lovelace_raw_config.yaml and add it to your ui-lovelace.yaml.
