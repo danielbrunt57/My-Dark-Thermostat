@@ -29,3 +29,9 @@ Custom sensors:
  - sensor.outside_weather_temperature
 
 Copy the code from lovelace_raw_config.yaml and add it as a new view in your ui.lovelace.yaml or your lovelace dashboard raw configuration
+
+Helpers:
+
+![image](https://user-images.githubusercontent.com/49846893/202268488-3d7fbaf7-c828-4301-a1cd-491f3b0febd4.png)
+
+![image](https://user-images.githubusercontent.com/49846893/202268689-f87263f5-38fc-4782-84c4-d6e08dbfe773.png)
