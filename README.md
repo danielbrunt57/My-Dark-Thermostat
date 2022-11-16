@@ -19,14 +19,16 @@ Addional components required:
 Thermostat: climate.living_room (from Nest Integration)
 
 Custom sensors:
- - nest_eco_low
  - nest_eco_high
- - living_room_eco_temp
- - living_room_hvac_action
- - living_room_hvac_mode
- - living_room_preset_mode
- - living_room_setpoint
- - living_room_temperature
+ - nest_eco_low
+ - nest_eco_temp
+ - nest_heating_runtime
+ - nest_humidity
+ - nest_hvac_action
+ - nest_preset_mode
+ - nest_room_hvac_mode
+ - nest_setpoint
+ - nest_temperature
  - sensor.nest_time_to_temp_message
  - sensor.outside_weather_temperature
 
