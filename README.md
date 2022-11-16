@@ -4,6 +4,8 @@ My custom multi-card configuration using Dark Thermostat card for my Nest Thermo
 
 ![image](https://user-images.githubusercontent.com/49846893/202269236-fb192ab6-2408-492f-ad70-48f9a14e6023.png)
 
+![image](https://user-images.githubusercontent.com/49846893/202269558-de8d2062-2676-4dad-8a66-4575ff07a4b2.png)
+
 Addional components required:
  - [browser-mod](https://github.com/thomasloven/hass-browser_mod)
  - [card-mod](https://github.com/thomasloven/lovelace-card-mod)
