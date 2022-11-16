@@ -8,7 +8,7 @@ Addional components required:
  - [browser-mod](https://github.com/thomasloven/hass-browser_mod)
  - [card-mod](https://github.com/thomasloven/lovelace-card-mod)
  - [custom:button-card](https://github.com/custom-cards/button-card)
- - [custom:popup-card] https://github.com/thomasloven/lovelace-popup-card
+ - [custom:popup-card](https://github.com/thomasloven/lovelace-popup-card)
  - [custom:scheduler-card](https://github.com/nielsfaber/scheduler-card)
  - [custom:thermostat-dark-card](https://github.com/ciotlosm/lovelace-thermostat-dark-card)
  - [custom:vertical-stack-in-card](https://github.com/ofekashery/vertical-stack-in-card)
