@@ -32,6 +32,4 @@ Copy the code from lovelace_raw_config.yaml and add it as a new view in your ui.
 
 Helpers:
 
-![image](https://user-images.githubusercontent.com/49846893/202268488-3d7fbaf7-c828-4301-a1cd-491f3b0febd4.png)
-
-![image](https://user-images.githubusercontent.com/49846893/202268689-f87263f5-38fc-4782-84c4-d6e08dbfe773.png)
+![image](https://user-images.githubusercontent.com/49846893/202268919-3b7732e2-8e0d-44cd-8555-1d7e26fd7113.png)![image](https://user-images.githubusercontent.com/49846893/202268689-f87263f5-38fc-4782-84c4-d6e08dbfe773.png)
