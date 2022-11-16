@@ -1,0 +1,95 @@
+- id: '1608610104075'
+  alias: HVAC - Heating Started
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: climate.living_room
+    attribute: hvac_action
+    to: heating
+    from: 'off'
+  condition: []
+  action:
+  - service: logbook.log
+    data:
+      name: Nest Thermostat Heating
+      message: 'current: {{ state_attr("climate.living_room","current_temperature")
+        }}; target: {{ state_attr("climate.living_room","temperature") }}'
+      entity_id: climate.living_room
+  - service: input_datetime.set_datetime
+    entity_id: input_datetime.hvac_current_heat_started
+    data:
+      datetime: '{{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
+  - service: input_number.set_value
+    data:
+      value: '{{ states("sensor.living_room_temperature")|float }}'
+    entity_id: input_number.hvac_current_heat_start_temp
+  mode: single
+- id: '1608610167182'
+  alias: HVAC - Cooling Started
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: climate.living_room
+    attribute: hvac_action
+    to: cooling
+  condition: []
+  action:
+  - service: logbook.log
+    data:
+      name: Nest Thermostat Cooling
+      message: 'current_temp: {{ state_attr("limate.living_room","current_temperature")
+        }}'
+      target_temp: '{{ state_attr("climate.living_room","temperature") }}'
+      entity_id: climate.living_room
+  mode: single
+
+- id: '1609223478340'
+  alias: HVAC - Heating Ended
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: climate.living_room
+    attribute: hvac_action
+    to: 'off'
+    from: heating
+  condition: []
+  action:
+  - service: logbook.log
+    data:
+      name: Nest Thermostat Heating Ended
+      message: 'current_temp: {{ state_attr("climate.living_room","current_temperature")
+        }}; target_temp: {{ state_attr("climate.living_room","temperature") }}'
+      entity_id: climate.living_room
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{ states("input_datetime.hvac_current_heat_started") }}'
+    entity_id: input_datetime.hvac_heat_started
+  - service: input_datetime.set_datetime
+    data:
+      datetime: '{{ now().strftime("%Y-%m-%d %H:%M:%S") }}'
+    entity_id: input_datetime.hvac_heat_ended
+  - service: input_number.set_value
+    data:
+      value: '{{ states("input_number.hvac_current_heat_start_temp")|float }}'
+    entity_id: input_number.hvac_heat_start_temp
+  - service: input_number.set_value
+    data:
+      value: '{{ states("sensor.living_room_temperature")|float }}'
+    entity_id: input_number.hvac_heat_end_temp
+  mode: single
+
+- id: '1611287263653'
+  alias: HVAC - Target Temp Changed
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: climate.living_room
+    attribute: temperature
+  condition: []
+  action:
+  - service: input_number.set_value
+    data:
+      value: '{{ states("sensor.living_room_temperature")|float }}'
+    entity_id: input_number.hvac_heat_end_temp
+  mode: single
+
