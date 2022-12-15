@@ -1,120 +1,7 @@
-  - path: environment
-    title: Environment
+  - title: Environment
+    path: environment
     icon: hass:thermostat
-    theme: ''
-    popup_cards:
-      sensor.nest_hvac_mode:
-        type: custom:card-templater
-        title: Cancel
-        card:
-          type: entities
-          show_header_toggle: false
-          title: 'Set thermostat to:'
-          style: |
-            #main-title {
-              font-size: 16px;
-            }
-            .card-header {
-              line-height: 20px;
-            }
-            .card-header .name {
-              font-size: 14px;
-              color: gray;
-            }
-          entities:
-            - entity: sensor.nest_hvac_mode
-              attribute: hvac_heat
-              type: custom:multiple-entity-row
-              image: /local/images/nest-mode-heat-200x200.png
-              name: Heat
-              show_state: true
-              icon: true
-              styles:
-                font-weight: bold
-                width: 80px
-                text-align: right
-                color: '#25B1F6'
-              tap_action:
-                action: call-service
-                service: climate.set_hvac_mode
-                service_data:
-                  entity_id: climate.living_room
-                  hvac_mode: heat
-            - entity: sensor.nest_hvac_mode
-              attribute: hvac_off
-              type: custom:multiple-entity-row
-              image: /local/images/nest-mode-off-200x200.png
-              name: 'Off'
-              show_state: true
-              styles:
-                font-weight: bold
-                width: 40px
-                text-align: right
-                color: '#25B1F6'
-              tap_action:
-                action: call-service
-                service: climate.set_hvac_mode
-                service_data:
-                  entity_id: climate.living_room
-                  hvac_mode: 'off'
-        entities:
-          - entity: sensor.nest_hvac_mode
-            state_template: |
-              {% if is_state('sensor.nest_hvac_mode', 'heat') %}
-               '✓'
-              {% else %}
-                ' '
-              {% endif %}
-        entity: sensor.nest_hvac_mode
-      sensor.nest_preset_mode:
-        title: ' '
-        card:
-          style: |
-            .card-header {
-              line-height: 20px;
-              font-size: 14px;
-              white-space: normal;
-              text-align: center;
-            }
-            .card-header .name {
-              font-size: 14px;
-              color: gray;
-              white-space: normal !important;
-              text-align: center;
-            }
-          type: entities
-          show_header_toggle: false
-          title: >-
-            Save energy by using Eco Temperatures when no one's home. Or turn
-            them on manually any time.
-          entities:
-            - type: button
-              icon: mdi:leaf
-              action_name: START ECO
-              name: ' '
-              tap_action:
-                action: call-service
-                service: climate.set_preset_mode
-                service_data:
-                  entity_id: climate.living_room
-                  preset_mode: eco
-            - type: button
-              icon: mdi:leaf-off
-              action_name: STOP ECO
-              name: ' '
-              tap_action:
-                action: call-service
-                service: climate.set_preset_mode
-                service_data:
-                  entity_id: climate.living_room
-                  preset_mode: none
-      climate.living_room:
-        title: Schedule
-        card:
-          type: custom:scheduler-card
-          title: Living Room Schedule
-          include:
-            - climate.living_room
+    theme: clear-dark
     badges: []
     cards:
       - type: custom:vertical-stack-in-card
@@ -151,20 +38,13 @@
                   box-shadow: none;
                 }  ha-icon {
                   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 26 24' fill='%23FFF' stroke='%23FFF'%3E%3Cpath stroke-width='.05' d='M12.5 24c-6.6 0-12-5.4-12-12s5.4-12 12-12c.6 0 1 .4 1 1s-.4 1-1 1C7 2 2.5 6.5 2.5 12s4.5 10 10 10 10-4.5 10-10c0-.6.4-1 1-1s1 .4 1 1c0 6.6-5.4 12-12 12zM22.9 8.4c-.5.2-1.1 0-1.3-.5-.2-.5 0-1.1.5-1.3.5-.2 1.1 0 1.3.5.2.5 0 1.1-.5 1.3zm-3.6-3.7c-.4-.4-.4-1 0-1.4s1-.4 1.4 0c.4.4.4 1 0 1.4-.4.4-1 .4-1.4 0zm-2.1 11.7l-5.2-3s-.1 0-.1-.1l-.1-.1-.1-.1-.1-.1v-.1-.1-.1-.1-.1-7.1c0-.6.4-1 1-1s1 .4 1 1v6.4l4.7 2.7c.5.3.6.9.4 1.4-.4.6-1 .7-1.5.5zm-1.1-14c-.5-.2-.8-.8-.5-1.3.2-.5.8-.8 1.3-.5.5.2.8.8.5 1.3-.2.5-.8.7-1.3.5z'/%3E%3C/svg%3E"); 
-                  background-position: 25%;
-                  background-position-x: 50%;
-                  background-position-y: center;
-                  background-repeat: no-repeat;
-                  height: 44px;
-                  margin: 0 
-                  auto 3px;
-                  width: 26px;            
-                }
+      - type: custom:vertical-stack-in-card
+        cards:
           - type: custom:thermostat-dark-card
             name: Living Room
             entity: climate.living_room
-            chevron_size: 50
-            step: 0.1
+            chevron_size: '50'
+            step: '0.5'
             pending: '1'
             idle_zone: '2'
             hvac:
@@ -190,11 +70,12 @@
                     border-bottom: 1pt solid #2b333a;
                   {% endif %}
                 {% endif %}
-                box-shadow: 0 0 20px;
+                box-shadow: 0 0 10px;
                }
                .dial_title {
                  color: white !important;
                }
+            highlight_tap: true
           - type: entities
             entities:
               - type: custom:multiple-entity-row
@@ -202,10 +83,11 @@
                 name: Inside Humidity
                 icon: mdi:none
                 style:
-                  hui-generic-entity-row$: |
-                    state-badge {
-                      display: none;
-                    }
+                  hui-generic-entity-row:
+                    $: |
+                      state-badge {
+                        display: none !important;
+                      }
             style:
               .: |
                 ha-card {
@@ -226,59 +108,52 @@
                 }
           - type: entities
             entities:
-              - entity: sensor.outside_weather_temperature
-                name: My Outside Temp
+              - entity: sensor.nest_outside_temperature
+                name: Outside Temp
                 icon: mdi:none
                 style:
-                  hui-generic-entity-row$: |
-                    state-badge {
-                      display: none;
-                    }
-            style: |
-              ha-card {
-                color: white;
-                {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
-                  background: #EB6D00;
-                  border-bottom: 1pt solid #E65E00;
-                {% else %}
-                  {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
-                    background: #0055FF ; 
-                    border-bottom: 1pt solid #00008B;
+                  hui-generic-entity-row:
+                    $: |
+                      state-badge {
+                        display: none !important;
+                      }
+            style:
+              .: |
+                ha-card {
+                  color: white;
+                  font-size: 1.1rem;
+                  {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
+                    background: #EB6D00;
+                    border-bottom: 1pt solid #E65E00;
                   {% else %}
-                    background: #373F48 ;
-                    border-bottom: 1pt solid #2b333a;
+                    {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
+                      background: #0055FF ; 
+                      border-bottom: 1pt solid #00008B;
+                    {% else %}
+                      background: #373F48 ;
+                      border-bottom: 1pt solid #2b333a;
+                    {% endif %}
                   {% endif %}
-                {% endif %}
-                box-shadow: 0 0 10px;
-                font-size: 1.0rem;
-               }
+                }
           - type: horizontal-stack
-            style: |
-              ha-card {
-                font-size: 80% !important;
-                color: white !important;
-                background:
-                {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
-                  #EB6D00 !important;
-                {% else %}
-                  {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
-                    #0055FF !important; 
+            style:
+              .: |
+                ha-card {
+                  color: white;
+                  font-size: 1.1rem;
+                  {% if is_state_attr('climate.living_room', 'hvac_action', 'heating') %}
+                    background: #EB6D00;
+                    border-bottom: 1pt solid #E65E00;
                   {% else %}
-                    #373F48 !important;
+                    {% if is_state_attr('climate.living_room', 'hvac_action', 'cooling') %}
+                      background: #0055FF ; 
+                      border-bottom: 1pt solid #00008B;
+                    {% else %}
+                      background: #373F48 ;
+                      border-bottom: 1pt solid #2b333a;
+                    {% endif %}
                   {% endif %}
-                {% endif %}
-                box-shadow: none;
-              }  ha-icon {
-                background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 26 24' fill='%23FFF' stroke='%23FFF'%3E%3Cpath stroke-width='.05' d='M12.5 24c-6.6 0-12-5.4-12-12s5.4-12 12-12c.6 0 1 .4 1 1s-.4 1-1 1C7 2 2.5 6.5 2.5 12s4.5 10 10 10 10-4.5 10-10c0-.6.4-1 1-1s1 .4 1 1c0 6.6-5.4 12-12 12zM22.9 8.4c-.5.2-1.1 0-1.3-.5-.2-.5 0-1.1.5-1.3.5-.2 1.1 0 1.3.5.2.5 0 1.1-.5 1.3zm-3.6-3.7c-.4-.4-.4-1 0-1.4s1-.4 1.4 0c.4.4.4 1 0 1.4-.4.4-1 .4-1.4 0zm-2.1 11.7l-5.2-3s-.1 0-.1-.1l-.1-.1-.1-.1-.1-.1v-.1-.1-.1-.1-.1-7.1c0-.6.4-1 1-1s1 .4 1 1v6.4l4.7 2.7c.5.3.6.9.4 1.4-.4.6-1 .7-1.5.5zm-1.1-14c-.5-.2-.8-.8-.5-1.3.2-.5.8-.8 1.3-.5.5.2.8.8.5 1.3-.2.5-.8.7-1.3.5z'/%3E%3C/svg%3E"); 
-                background-position: 25%;
-                background-position-x: 50%;
-                background-position-y: center;
-                background-repeat: no-repeat;
-                height: 44px;
-                margin: 0 
-                auto 3px;
-                width: 26px;            
-              }
+                }
             cards:
               - type: custom:button-card
                 entity: sensor.nest_hvac_mode
@@ -383,8 +258,8 @@
               - type: custom:button-card
                 entity: climate.living_room
                 name: SCHEDULE
-                action: url
-                navigation_path: https://home.nest.com
+                tap_action:
+                  action: more-info
                 color_type: card
                 icon: none
                 show_state: false
@@ -420,7 +295,7 @@
                 name: HISTORY
                 tap_action:
                   action: url
-                  url_path: https://home.nest.com
+                  url_path: https://home.nest.com/thermostat/02AA01AC28140A0G
                 color_type: card
                 icon: mdi:none
                 show_state: false
@@ -449,5 +324,194 @@
                     height: 44px;
                     margin: 0 
                     auto 3px;
-                    width: 26px;            
+                    width: 26px;         
                   }
+      - type: entities
+        entities:
+          - entity: sensor.nest_hvac_action
+          - entity: sensor.norton_court_heating
+            name: Furnace Runtime - Today
+          - entity: sensor.furnace_runtime_weekly
+          - entity: sensor.furnace_runtime_monthly
+          - entity: sensor.furnace_runtime_annually
+          - entity: sensor.living_room_time_to_temp
+            name: Estimated time to temp
+          - entity: sensor.nest_time_to_temp_message
+            name: Message
+          - entity: sensor.nest_setpoint
+          - entity: sensor.nest_temperature
+          - entity: sensor.living_room_temperature
+            name: Living Room Precise Temp
+          - entity: input_number.hvac_current_heat_start_temp
+            name: This Start Temp
+          - entity: input_number.hvac_heat_start_temp
+            name: Last Start Temp
+          - entity: input_number.hvac_heat_end_temp
+            name: Last End Temp
+          - entity: input_datetime.furnace_filter_replaced
+          - entity: script.furnace_filter_replaced
+            name: Filter just replaced
+          - entity: sensor.furnace_filter_usage
+          - entity: sensor.furnace_filter_hours
+        card_mod:
+          class: inline-card
+      - type: custom:popup-card
+        entity: climate.living_room
+        card:
+          type: custom:scheduler-card
+          title: Heat schedule
+          discover_existing: false
+          include:
+            - climate
+          card_mod:
+            class: inline-card
+      - type: custom:popup-card
+        entity: sensor.nest_hvac_mode
+        card:
+          type: entities
+          show_header_toggle: false
+          title: 'Set thermostat to:'
+          style: |
+            .card-header {
+              line-height: 20px;
+            }
+            .card-header .name {
+              font-size: 20px;
+              color: darkgray;
+            }
+            ha-card {
+              background: none;
+              box-shadow: none;
+              border: none;
+            }
+          entities:
+            - entity: sensor.nest_hvac_mode
+              attribute: hvac_heat
+              type: custom:multiple-entity-row
+              image: /local/images/nest-mode-heat-200x200.png
+              name: Heat
+              show_state: true
+              icon: true
+              styles:
+                font-weight: bold
+                width: 80px
+                text-align: right
+                color: '#25B1F6'
+              tap_action:
+                action: call-service
+                service: climate.set_hvac_mode
+                service_data:
+                  entity_id: climate.living_room
+                  hvac_mode: heat
+            - entity: sensor.nest_hvac_mode
+              attribute: hvac_off
+              type: custom:multiple-entity-row
+              image: /local/images/nest-mode-off-200x200.png
+              name: 'Off'
+              show_state: true
+              styles:
+                font-weight: bold
+                width: 40px
+                text-align: right
+                color: '#25B1F6'
+              tap_action:
+                action: call-service
+                service: climate.set_hvac_mode
+                service_data:
+                  entity_id: climate.living_room
+                  hvac_mode: 'off'
+      - type: custom:popup-card
+        entity: sensor.nest_preset_mode
+        card:
+          type: vertical-stack
+          cards:
+            - type: markdown
+              content: >
+                Save energy by using Eco Temperatures when no one's home. Or
+                turn them on manually any time.
+              style: |
+                ha-card {
+                  background: none;
+                  box-shadow: none;
+                  border: none;
+                }
+            - type: conditional
+              conditions:
+                - entity: sensor.nest_preset_mode
+                  state: none
+              card:
+                type: custom:button-card
+                entity: sensor.nest_preset_mode
+                name: Start Eco
+                show_icon: false
+                styles:
+                  grid:
+                    - grid-template-columns: 1fr 90%
+                tap_action:
+                  action: call-service
+                  service: climate.set_preset_mode
+                  service_data:
+                    entity_id: climate.living_room
+                    preset_mode: eco
+                style: |
+                  ha-card {
+                    background: none;
+                    box-shadow: none;
+                    border: none;
+                  }
+            - type: conditional
+              conditions:
+                - entity: sensor.nest_preset_mode
+                  state: eco
+              card:
+                type: custom:button-card
+                entity: sensor.nest_preset_mode
+                name: Stop Eco
+                show_icon: false
+                styles:
+                  grid:
+                    - grid-template-columns: 1fr 80%
+                tap_action:
+                  action: call-service
+                  service: climate.set_preset_mode
+                  service_data:
+                    entity_id: climate.living_room
+                    preset_mode: none
+                style: |
+                  ha-card {
+                    background: none;
+                    box-shadow: none;
+                    border: none;
+                  }
+        style: |
+          ha-card {
+            background: none;
+            box-shadow: none;
+            border: none;
+          }
+          bar-card-name {
+            color: white;
+            font-size: 100%;
+            font-weight: normal;
+            margin: 4px;     
+          } 
+          bar-card-backgroundbar {
+            border-shadow: 2pt;
+            margin-top: -2pt;
+            margin-left: -2pt;
+            border-radius: 5pt;
+            border-style: solid;
+            #background: rgba(255, 0, 0, 0.8);
+            background: black;
+          }
+          bar-card-value {
+            font-size: 125%;
+            color: white;
+            font-weight: bold;
+            margin: 4px;
+          }
+          bar-card-currentbar {
+            border-radius: 5pt;
+          }
+        card_mod:
+          class: inline-card
