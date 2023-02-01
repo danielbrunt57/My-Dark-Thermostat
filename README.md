@@ -37,3 +37,30 @@ Copy the code from lovelace_raw_config.yaml and add it as a new view in your ui.
 Helpers:
 
 ![image](https://user-images.githubusercontent.com/49846893/202268919-3b7732e2-8e0d-44cd-8555-1d7e26fd7113.png)![image](https://user-images.githubusercontent.com/49846893/202268689-f87263f5-38fc-4782-84c4-d6e08dbfe773.png)
+
+sensors.yaml is formatted for the template integration using the modern configuration for variable names.
+See Modern Configuration Variables (https://www.home-assistant.io/integrations/template/#configuration-variables)
+Sample configuration.yaml entry:
+```
+template:
+  - sensor:
+    - name: "Nest Heating Runtime"
+      unique_id: nest_heat_runtime
+      unit_of_measurement: 'seconds'
+      state: "{{state_attr('climate.living_room','elapsed_seconds')|float(0) }}"
+      ...
+```
+
+To use legacy format templating, somewhat extensive changes are required for variable names and formatting.
+See Legacy Configuration Variables (https://www.home-assistant.io/integrations/template/#configuration-variables)
+i.e. the above code would become:
+```
+sensor:
+  - platform: template
+    sensors:
+      nest_heating_runtime:
+        friendly_name: Nest Heating Runtime
+        unit_of_measurement: 'seconds'
+        value_template:: "{{state_attr('climate.living_room','elapsed_seconds')|float(0) }}"
+      ...
+```
