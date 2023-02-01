@@ -39,7 +39,9 @@ Helpers:
 ![image](https://user-images.githubusercontent.com/49846893/202268919-3b7732e2-8e0d-44cd-8555-1d7e26fd7113.png)![image](https://user-images.githubusercontent.com/49846893/202268689-f87263f5-38fc-4782-84c4-d6e08dbfe773.png)
 
 sensors.yaml is formatted for the template integration using the modern configuration for variable names.
-See Modern Configuration Variables (https://www.home-assistant.io/integrations/template/#configuration-variables)
+
+See [Modern Configuration Variables](https://www.home-assistant.io/integrations/template/#configuration-variables/)
+
 Sample configuration.yaml entry:
 ```
 template:
@@ -52,7 +54,9 @@ template:
 ```
 
 To use legacy format templating, somewhat extensive changes are required for variable names and formatting.
-See Legacy Configuration Variables (https://www.home-assistant.io/integrations/template/#configuration-variables)
+
+See [Legacy Configuration Variables](https://www.home-assistant.io/integrations/template/#configuration-variables/)
+
 i.e. the above code would become:
 ```
 sensor:
