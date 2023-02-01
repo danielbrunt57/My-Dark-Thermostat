@@ -1,158 +1,155 @@
-sensor:
-  - platform: template
-    sensors:
+- sensor:
+  - name: "Living Room Time to Temp"
+    unique_id: living_room_time_to_temp
+    icon: mdi:camera-timer
+    unit_of_measurement: 'minutes'
+    state: "{{ ((state_attr('climate.living_room','temperature')|float(0) - states('sensor.living_room_temperature')|float(0)) * state_attr('sensor.living_room_time_to_temp','rate_of_change')|float(0)/60)|abs|int }}"
+    attributes:
+      message: |
+        {% if states('sensor.living_room_time_to_temp')|float(0) < 10 %}
+         IN LESS THAN 10 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 16 %}
+         IN 15 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 21 %}
+         IN 20 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 26 %}
+         IN 25 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 31 %}
+         IN 30 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 36 %}
+         IN 35 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 41 %}
+         IN 40 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 46 %}
+         IN 45 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 51 %}
+         IN 50 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 56 %}
+         IN 55 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 61 %}
+         IN 1 HR
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 66 %}
+         IN 1 HR 5 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 71 %}
+         IN 1 HR 10 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 76 %}
+         IN 1 HR 15 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 81 %}
+         IN 1 HR 20 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 86 %}
+         IN 1 HR 25 MIN
+        {% elif states('sensor.living_room_time_to_temp')|float(0) < 191 %}
+         IN 1½ HR
+        {% else %}
+         IN 2+ HR
+        {% endif %}
+      time_of_current_change_to_heating: >
+        {{ states('input_datetime.hvac_current_heat_started') }}
+      time_of_last_change_to_heating: >
+        {{ states('input_datetime.hvac_heat_started') }}
+      time_of_last_change_from_heating: >
+        {{ states('input_datetime.hvac_heat_ended') }}
+      elapsed_seconds: >
+        {{ as_timestamp(states('input_datetime.hvac_heat_ended')) - as_timestamp(states('input_datetime.hvac_heat_started')) }}
+      temp_at_last_change_to_heat: >
+        {{ states('input_number.hvac_heat_start_temp') }}
+      temp_at_last_change_from_heat: >
+        {{ states('input_number.hvac_heat_end_temp') }}
+      degrees_of_separation: >-
+          {{ (states('input_number.hvac_heat_end_temp')|float(0) - states('input_number.hvac_heat_start_temp')|float(0))|abs|round(1,"even",0) }}
+      rate_of_change: >
+        {% if state_attr('sensor.living_room_time_to_temp', 'degrees_of_separation')|float(0) > 0 %}
+         {{ state_attr('sensor.living_room_time_to_temp', 'elapsed_seconds')|float(0) / state_attr('sensor.living_room_time_to_temp', 'degrees_of_separation')|float(0) }}
+        {% else %}
+         0
+        {% endif %}
+      current_temp: >
+        {{ states('sensor.living_room_temperature') }}
+      target_temp: >
+        {{ state_attr('climate.living_room','temperature') }}
+      last_estimated_time_to_temp: >
+        {{ ((state_attr('sensor.living_room_time_to_temp','temp_at_last_change_from_heat')|float(0) - state_attr('sensor.living_room_time_to_temp','temp_at_last_change_to_heat')|float(0)) * state_attr('sensor.living_room_time_to_temp','rate_of_change')|float(0))|abs|timestamp_custom('%H:%M:%S', true) }}
 
-      - name: "Living Room Time to Temp"
-        unique_id: living_room_time_to_temp
-        icon: mdi:camera-timer
-        unit_of_measurement: 'minutes'
-        state: "{{ ((state_attr('climate.living_room','temperature')|float(0) - states('sensor.living_room_temperature')|float(0)) * state_attr('sensor.living_room_time_to_temp','rate_of_change')|float(0)/60)|abs|int }}"
-        attributes:
-          message: |
-            {% if states('sensor.living_room_time_to_temp')|float(0) < 10 %}
-             IN LESS THAN 10 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 16 %}
-             IN 15 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 21 %}
-             IN 20 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 26 %}
-             IN 25 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 31 %}
-             IN 30 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 36 %}
-             IN 35 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 41 %}
-             IN 40 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 46 %}
-             IN 45 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 51 %}
-             IN 50 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 56 %}
-             IN 55 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 61 %}
-             IN 1 HR
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 66 %}
-             IN 1 HR 5 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 71 %}
-             IN 1 HR 10 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 76 %}
-             IN 1 HR 15 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 81 %}
-             IN 1 HR 20 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 86 %}
-             IN 1 HR 25 MIN
-            {% elif states('sensor.living_room_time_to_temp')|float(0) < 191 %}
-             IN 1½ HR
-            {% else %}
-             IN 2+ HR
-            {% endif %}
-          time_of_current_change_to_heating: >
-            {{ states('input_datetime.hvac_current_heat_started') }}
-          time_of_last_change_to_heating: >
-            {{ states('input_datetime.hvac_heat_started') }}
-          time_of_last_change_from_heating: >
-            {{ states('input_datetime.hvac_heat_ended') }}
-          elapsed_seconds: >
-            {{ as_timestamp(states('input_datetime.hvac_heat_ended')) - as_timestamp(states('input_datetime.hvac_heat_started')) }}
-          temp_at_last_change_to_heat: >
-            {{ states('input_number.hvac_heat_start_temp') }}
-          temp_at_last_change_from_heat: >
-            {{ states('input_number.hvac_heat_end_temp') }}
-          degrees_of_separation: >-
-              {{ (states('input_number.hvac_heat_end_temp')|float(0) - states('input_number.hvac_heat_start_temp')|float(0))|abs|round(1,"even",0) }}
-          rate_of_change: >
-            {% if state_attr('sensor.living_room_time_to_temp', 'degrees_of_separation')|float(0) > 0 %}
-             {{ state_attr('sensor.living_room_time_to_temp', 'elapsed_seconds')|float(0) / state_attr('sensor.living_room_time_to_temp', 'degrees_of_separation')|float(0) }}
-            {% else %}
-             0
-            {% endif %}
-          current_temp: >
-            {{ states('sensor.living_room_temperature') }}
-          target_temp: >
-            {{ state_attr('climate.living_room','temperature') }}
-          last_estimated_time_to_temp: >
-            {{ ((state_attr('sensor.living_room_time_to_temp','temp_at_last_change_from_heat')|float(0) - state_attr('sensor.living_room_time_to_temp','temp_at_last_change_to_heat')|float(0)) * state_attr('sensor.living_room_time_to_temp','rate_of_change')|float(0))|abs|timestamp_custom('%H:%M:%S', true) }}
+  - name: "Nest Heating Runtime"
+    unique_id: nest_heat_runtime
+    unit_of_measurement: 'seconds'
+    state: "{{state_attr('climate.living_room','elapsed_seconds')|float(0) }}"
 
-      - name: "Nest Heating Runtime"
-        unique_id: nest_heat_runtime
-        unit_of_measurement: 'seconds'
-        state: "{{state_attr('climate.living_room','elapsed_seconds')|float(0) }}"
+  - name: "Nest ECO Low"
+    unique_id: nest_eco_low
+    device_class: temperature
+    unit_of_measurement: '°C'
+    state: '19.5'
 
-      - name: "Nest ECO Low"
-        unique_id: nest_eco_low
-        device_class: temperature
-        unit_of_measurement: '°C'
-        state: '19.5'
+  - name: "Nest ECO High"
+    unique_id: nest_eco_high
+    device_class: temperature
+    unit_of_measurement: '°C'
+    state: '24.5'
 
-      - name: "Nest ECO High"
-        unique_id: nest_eco_high
-        device_class: temperature
-        unit_of_measurement: '°C'
-        state: '24.5'
+  - name: "Nest ECO Temp"
+    unique_id: nest_eco_temp
+    state: >
+      {% if states('sensor.nest_eco_low') < states('sensor.nest_setpoint') < states('sensor.nest_eco_high') %} none
+      {% else %} eco
+      {% endif %}
 
-      - name: "Nest ECO Temp"
-        unique_id: nest_eco_temp
-        state: >
-          {% if states('sensor.nest_eco_low') < states('sensor.nest_setpoint') < states('sensor.nest_eco_high') %} none
-          {% else %} eco
-          {% endif %}
+  - name: "Nest Humidity"
+    unique_id: nest_humidity
+    device_class: humidity
+    unit_of_measurement: '%'
+    state: "{{ states('sensor.living_room_humidity')|round(0,'even',0) }}"
 
-      - name: "Nest Humidity"
-        unique_id: nest_humidity
-        device_class: humidity
-        unit_of_measurement: '%'
-        state: "{{ states('sensor.living_room_humidity')|round(0,'even',0) }}"
+  - name: "Nest HVAC Action"
+    unique_id: nest_hvac_action
+    state: "{{ state_attr('climate.living_room','hvac_action') }}"
 
-      - name: "Nest HVAC Action"
-        unique_id: nest_hvac_action
-        state: "{{ state_attr('climate.living_room','hvac_action') }}"
+  - name: "Nest HVAC Mode"
+    unique_id: nest_hvac_mode
+    state: "{{ states('climate.living_room') }}"
+    attributes:
+      hvac_off:  "{% if (states('climate.living_room') ==  'off') %} ✔ {% else %} ­{% endif %}"
+      hvac_heat: "{% if (states('climate.living_room') == 'heat') %} ✔ {% else %} ­{% endif %}"
+      hvac_cool: "{% if (states('climate.living_room') == 'cool') %} ✔ {% else %} ­{% endif %}"
+      hvac_auto: "{% if (states('climate.living_room') == 'auto') %} ✔ {% else %} ­{% endif %}"
 
-      - name: "Nest HVAC Mode"
-        unique_id: nest_hvac_mode
-        state: "{{ states('climate.living_room') }}"
-        attributes:
-          hvac_off:  "{% if (states('climate.living_room') ==  'off') %} ✔ {% else %} ­{% endif %}"
-          hvac_heat: "{% if (states('climate.living_room') == 'heat') %} ✔ {% else %} ­{% endif %}"
-          hvac_cool: "{% if (states('climate.living_room') == 'cool') %} ✔ {% else %} ­{% endif %}"
-          hvac_auto: "{% if (states('climate.living_room') == 'auto') %} ✔ {% else %} ­{% endif %}"
+  - name: "Nest Preset Mode"
+    unique_id: nest_preset_mode
+    state: "{{ state_attr('climate.living_room','preset_mode') }}"
+    attributes:
+      none: "{% if (state_attr('climate.living_room','preset_mode') == 'none') %} ✔ {% else %} ­{% endif %}"
+      eco:  "{% if (state_attr('climate.living_room','preset_mode') ==  'eco') %} ✔ {% else %} ­{% endif %}"
 
-      - name: "Nest Preset Mode"
-        unique_id: nest_preset_mode
-        state: "{{ state_attr('climate.living_room','preset_mode') }}"
-        attributes:
-          none: "{% if (state_attr('climate.living_room','preset_mode') == 'none') %} ✔ {% else %} ­{% endif %}"
-          eco:  "{% if (state_attr('climate.living_room','preset_mode') ==  'eco') %} ✔ {% else %} ­{% endif %}"
+  - name: "Nest Heating Rate of Change"
+    unique_id: nest_heating_rate_of_change
+    unit_of_measurement: 'seconds/degree'
+    state: "{{ state_attr('sensor.living_room_time_to_temp','rate_of_change')|float(0) }}"
 
-      - name: "Nest Heating Rate of Change"
-        unique_id: nest_heating_rate_of_change
-        unit_of_measurement: 'seconds/degree'
-        state: "{{ state_attr('sensor.living_room_time_to_temp','rate_of_change')|float(0) }}"
+  - name: "Nest Setpoint"
+    unique_id: nest_setpoint
+    device_class: temperature
+    unit_of_measurement: '°C'
+    state: "{{ state_attr('climate.living_room', 'temperature') }}"
 
-      - name: "Nest Setpoint"
-        unique_id: nest_setpoint
-        device_class: temperature
-        unit_of_measurement: '°C'
-        state: "{{ state_attr('climate.living_room', 'temperature') }}"
+  - name: "Nest Time to Temp Message"
+    unique_id: nest_time_to_temp_message
+    state: >
+      {% if state_attr('climate.living_room','hvac_action') == 'off' %} SYSTEM IS OFF
+      {% elif state_attr('climate.living_room','hvac_action') == 'idle' and states('climate.living_room') == 'heat' %} HEAT SET TO
+      {% elif state_attr('climate.living_room','hvac_action') == 'idle' and states('climate.living_room') == 'cool' %} COOLING SET TO
+      {% else %} {{ state_attr('sensor.living_room_time_to_temp','message') }}
+      {% endif %}
+    attributes:
+      hvac_action: "{{ state_attr('climate.living_room','hvac_action') }}"
 
-      - name: "Nest Time to Temp Message"
-        unique_id: nest_time_to_temp_message
-        state: >
-          {% if state_attr('climate.living_room','hvac_action') == 'off' %} SYSTEM IS OFF
-          {% elif state_attr('climate.living_room','hvac_action') == 'idle' and states('climate.living_room') == 'heat' %} HEAT SET TO
-          {% elif state_attr('climate.living_room','hvac_action') == 'idle' and states('climate.living_room') == 'cool' %} COOLING SET TO
-          {% else %} {{ state_attr('sensor.living_room_time_to_temp','message') }}
-          {% endif %}
-        attributes:
-          hvac_action: "{{ state_attr('climate.living_room','hvac_action') }}"
+  - name: "Nest Temperature"
+    unique_id: nest_temperature
+    device_class: temperature
+    unit_of_measurement: '°C'
+    state: "{{ state_attr('climate.living_room','current_temperature')|round(1, 'half', default=0) }}"
 
-      - name: "Nest Temperature"
-        unique_id: nest_temperature
-        device_class: temperature
-        unit_of_measurement: '°C'
-        state: "{{ state_attr('climate.living_room','current_temperature')|round(1, 'half', default=0) }}"
-
-      - name: "Nest Outside Temperature"
-        unique_id: nest_outside_temperature
-        device_class: temperature
-        unit_of_measurement: '°C'
-        state: "{{ (states('sensor.openweathermap_temperature')|float(0) + 0.5)|round(0,'floor',default=0) }}"
+  - name: "Nest Outside Temperature"
+    unique_id: nest_outside_temperature
+    device_class: temperature
+    unit_of_measurement: '°C'
+    state: "{{ (states('sensor.openweathermap_temperature')|float(0) + 0.5)|round(0,'floor',default=0) }}"
